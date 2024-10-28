@@ -23,8 +23,13 @@ spl_autoload_register(function (string $class) {
  ******************************************************/
 $serviceContainer = new ServiceContainer();
 
-
 /*****************************************
  * Setting application service container.
  ****************************************/
 \Core\App\Application::setServiceContainer($serviceContainer);
+
+
+/********************************
+ * Initializing providers.
+ *******************************/
+\Core\Providers\EnvProvider::init();

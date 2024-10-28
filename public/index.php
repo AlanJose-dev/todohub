@@ -9,6 +9,7 @@
  * Helpful constants.
  ******************************/
 const BASE_PATH = __DIR__ . '/../';
+const SERVICE_KEY_PREFIX = '_service_';
 
 /*******************************
  * Calling autoload.
