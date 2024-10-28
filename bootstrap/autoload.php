@@ -1,5 +1,11 @@
 <?php
+/**********************************
+ * Application bootstrap file.
+ *********************************/
 
+/**********************************************
+ * Registering classes autoloader function.
+ *********************************************/
 spl_autoload_register(function (string $class) {
     $class = str_replace('\\', '/', $class);
     $file = BASE_PATH . $class . '.php';
