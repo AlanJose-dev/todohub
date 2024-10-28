@@ -20,7 +20,7 @@ class Cache
      */
     public static function get(string $key, mixed $default = null): mixed
     {
-        return apcu_fetch($key, $default);
+        return apcu_fetch($key) ?? $default;
     }
 
     /**
@@ -63,8 +63,8 @@ class Cache
     public function getMultiple(array $keys, mixed $default = null): array
     {
         $resolvedItens = [];
-        array_walk($keys, function(string $key) use (&$resolvedItens) {
-            $resolvedItens[$key] = apcu_fetch($key);
+        array_walk($keys, function(string $key) use (&$resolvedItens, $default) {
+            $resolvedItens[$key] = apcu_fetch($key) ?? $default;
         });
         return $resolvedItens;
     }
