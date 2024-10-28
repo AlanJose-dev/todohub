@@ -60,13 +60,13 @@ class Cache
      * @param mixed|null $default
      * @return array
      */
-    public function getMultiple(array $keys, mixed $default = null): array
+    public static function getMultiple(array $keys, mixed $default = null): array
     {
-        $resolvedItens = [];
-        array_walk($keys, function(string $key) use (&$resolvedItens, $default) {
-            $resolvedItens[$key] = apcu_fetch($key) ?? $default;
-        });
-        return $resolvedItens;
+        $resolvedItems = [];
+        foreach ($keys as $key) {
+            $resolvedItems[$key] = self::get($key, $default);
+        }
+        return $resolvedItems;
     }
 
     /**
@@ -75,11 +75,11 @@ class Cache
      * @param int|\DateInterval|null $ttl
      * @return bool
      */
-    public function setMultiple(array $values, null|int|\DateInterval $ttl = null): bool
+    public static function setMultiple(array $values, null|int|\DateInterval $ttl = null): bool
     {
-        array_walk($values, function(mixed $value, string $key) use ($ttl) {
-            apcu_store($key, $value, $ttl ?? self::DEFAULT_TTL);
-        });
+        foreach ($values as $key => $value) {
+            self::set($key, $value, $ttl);
+        }
         return true;
     }
 
@@ -88,11 +88,11 @@ class Cache
      * @param array $keys
      * @return bool
      */
-    public function deleteMultiple(array $keys): bool
+    public static function deleteMultiple(array $keys): bool
     {
-        array_walk($keys, function(string $key) {
-            apcu_delete($key);
-        });
+        foreach ($keys as $key) {
+            self::delete($key);
+        }
         return true;
     }
 
