@@ -2,6 +2,8 @@
 
 namespace Core\App;
 
+use Core\Facades\Cache;
+
 /************************************************
  * The service container provides service bind to
  * resolve instances.
@@ -39,6 +41,11 @@ class ServiceContainer
      */
     public function resolve(string $key): mixed
     {
+        // If service is cached returns it.
+        if(Cache::has($key)) {
+            return Cache::get($key);
+        }
+
         // If the service is already resolved returns it.
         if(array_key_exists($key, $this->instances)) {
             return $this->instances[$key];
@@ -51,6 +58,19 @@ class ServiceContainer
 
         // Resolve service instance and returns it.
         $this->instances[$key] = call_user_func($this->binds[$key]);
+        Cache::set($key, $this->instances[$key]);
         return $this->instances[$key];
+    }
+
+    /**
+     * Remove all cached services.
+     * @return bool
+     */
+    public function clearCachedServices(): bool
+    {
+        foreach (array_keys($this->instances) as $key) {
+            Cache::delete($key);
+        }
+        return true;
     }
 }
