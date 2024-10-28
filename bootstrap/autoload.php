@@ -6,6 +6,9 @@
 /**********************************************
  * Registering classes autoloader function.
  *********************************************/
+
+use Core\App\ServiceContainer;
+
 spl_autoload_register(function (string $class) {
     $class = str_replace('\\', '/', $class);
     $file = BASE_PATH . $class . '.php';
@@ -14,3 +17,8 @@ spl_autoload_register(function (string $class) {
     }
     require $file;
 });
+
+/*******************************************************
+ * Instantiating ServiceContainer and binding services.
+ ******************************************************/
+$serviceContainer = new ServiceContainer();
