@@ -28,9 +28,9 @@ class Router
         $this->add([
             'uri' => $uri,
             'method' => 'GET',
-            'action' => [
-                'controller' => $action['controller'],
-                'action' => $action['action']
+            'handler' => [
+                'controller' => $action[0],
+                'action' => $action[1]
             ],
             'middlewares' => $options['middlewares'] ?? [],
             'name' => $options['name'] ?? null,
@@ -43,9 +43,9 @@ class Router
         $this->add([
             'uri' => $uri,
             'method' => 'POST',
-            'action' => [
-                'controller' => $action['controller'],
-                'action' => $action['action']
+            'handler' => [
+                'controller' => $action[0],
+                'action' => $action[1]
             ],
             'middlewares' => $options['middlewares'] ?? [],
             'name' => $options['name'] ?? null,
@@ -58,9 +58,9 @@ class Router
         $this->add([
             'uri' => $uri,
             'method' => 'PUT',
-            'action' => [
-                'controller' => $action['controller'],
-                'action' => $action['action']
+            'handler' => [
+                'controller' => $action[0],
+                'action' => $action[1]
             ],
             'middlewares' => $options['middlewares'] ?? [],
             'name' => $options['name'] ?? null,
@@ -73,9 +73,9 @@ class Router
         $this->add([
             'uri' => $uri,
             'method' => 'PATCH',
-            'action' => [
-                'controller' => $action['controller'],
-                'action' => $action['action']
+            'handler' => [
+                'controller' => $action[0],
+                'action' => $action[1]
             ],
             'middlewares' => $options['middlewares'] ?? [],
             'name' => $options['name'] ?? null,
@@ -88,9 +88,9 @@ class Router
         $this->add([
             'uri' => $uri,
             'method' => 'DELETE',
-            'action' => [
-                'controller' => $action['controller'],
-                'action' => $action['action']
+            'handler' => [
+                'controller' => $action[0],
+                'action' => $action[1]
             ],
             'middlewares' => $options['middlewares'] ?? [],
             'name' => $options['name'] ?? null,
@@ -104,13 +104,14 @@ class Router
      * @param string $method
      * @return self
      */
-    public function route(string $requestUri, string $method): self
+    public function route(string $requestUri, string $method): void
     {
         foreach ($this->routes as $route) {
             if ($route['uri'] === $requestUri && $route['method'] === $method) {
-                $controller = new $route['controller'];
-                $action = $route['action'];
-                return call_user_func([$controller, $action]);
+                $controller = new $route['handler']['controller'];
+                $action = $route['handler']['action'];
+                call_user_func([$controller, $action]);
+                die();
             }
         }
         http_response_code(404);
