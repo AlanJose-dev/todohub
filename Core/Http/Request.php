@@ -37,8 +37,62 @@ class Request
     {
         $this->method = $_POST['_method'] ?? $_SERVER['REQUEST_METHOD'];
         $this->uri = new Uri(parse_url($_SERVER['REQUEST_URI']));
-        $this->uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $this->inputBag = new InputBag($this->method === 'GET' ? $_GET : $_POST);
         $this->headerBag = new HeaderBag(getallheaders());
+    }
+
+    /**
+     * Gets the request method.
+     * @return string
+     */
+    public function method(): string
+    {
+        return $this->method;
+    }
+
+    /**
+     * Get the request uri object.
+     * @return Uri
+     */
+    public function uri(): Uri
+    {
+        return $this->uri;
+    }
+
+    /**
+     * Get the request input bag.
+     * @return InputBag
+     */
+    public function input(): InputBag
+    {
+        return $this->inputBag;
+    }
+
+    /**
+     * Get the headers bag.
+     * @return HeaderBag
+     */
+    public function headers(): HeaderBag
+    {
+        return $this->headerBag;
+    }
+
+    /**
+     * Checks if the request is ajax.
+     * @return bool
+     */
+    public function isAjax(): bool
+    {
+        // Ajax header.
+        return $this->headerBag->get('X-Requested-With') === 'XMLHttpRequest';
+    }
+
+    /**
+     * Checks if request is https.
+     * @return bool
+     */
+    public function isHttps(): bool
+    {
+        return $_SERVER['HTTPS'] === 'on';
     }
 }
