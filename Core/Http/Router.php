@@ -99,10 +99,33 @@ class Router
     }
 
     /**
+     * Redirect the user to another route.
+     * @param string $uri
+     * @param array|null $flashData
+     * @return void
+     */
+    public function redirect(string $uri, ?array $flashData = null)
+    {
+        http_response_code(303);
+        header('Location: ' . $uri);
+        // TODO: Add flash session.
+        die();
+    }
+
+    /**
+     * Get the last previous uri after redirect.
+     * @return array
+     */
+    public function lastUri(): array
+    {
+        return $_SERVER['HTTP_REFERER'];
+    }
+
+    /**
      * Handle the incoming request and define the suitable route.
      * @param string $requestUri
      * @param string $method
-     * @return self
+     * @return void
      */
     public function route(string $requestUri, string $method): void
     {
