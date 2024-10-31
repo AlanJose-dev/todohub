@@ -2,6 +2,8 @@
 
 namespace Core\Http;
 
+use Core\Http\Controllers\HeaderBag;
+
 class Request
 {
     private string $method;
@@ -11,10 +13,13 @@ class Request
 
     private InputBag $inputBag;
 
+    private HeaderBag $headerBag;
+
     public function __construct()
     {
         $this->method = $_POST['_method'] ?? $_SERVER['REQUEST_METHOD'];
         $this->uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $this->inputBag = new InputBag($this->method === 'GET' ? $_GET : $_POST);
+        $this->headerBag = new HeaderBag(getallheaders());
     }
 }
