@@ -29,5 +29,4 @@ $router = new Router();
 
 require BASE_PATH . 'routes/web.php';
 
-
 $router->route($requestUri, $requestMethod);

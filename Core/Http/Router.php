@@ -133,7 +133,9 @@ class Router
             if ($route['uri'] === $requestUri && $route['method'] === $method) {
                 $controller = new $route['handler']['controller'];
                 $action = $route['handler']['action'];
-                call_user_func([$controller, $action]);
+                $request = new Request();
+                // TODO Implements a param_split system.
+                call_user_func([$controller, $action], $request);
                 die();
             }
         }
