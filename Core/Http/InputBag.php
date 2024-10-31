@@ -9,6 +9,10 @@ use Core\Http\Interfaces\BagInterface;
  */
 class InputBag implements BagInterface
 {
+    /**
+     * Input payload.
+     * @var array
+     */
     private array $payload = [];
 
     public function __construct(array $payload)
