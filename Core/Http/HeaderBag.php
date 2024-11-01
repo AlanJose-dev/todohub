@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Http\Controllers;
+namespace Core\Http;
 
 use Core\Http\Interfaces\BagInterface;
 

@@ -2,8 +2,6 @@
 
 namespace Core\Http;
 
-use Core\Http\Controllers\HeaderBag;
-
 /**
  * Handle the incoming request.
  */
@@ -93,6 +91,6 @@ class Request
      */
     public function isHttps(): bool
     {
-        return $_SERVER['HTTPS'] === 'on';
+        return isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on';
     }
 }

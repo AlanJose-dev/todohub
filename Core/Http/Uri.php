@@ -58,18 +58,18 @@ class Uri
      * Get the uri scheme.
      * @return string
      */
-    public function scheme(): string
+    public function scheme(): ?string
     {
-        return $this->fragmentedUri['scheme'];
+        return $this->fragmentedUri['scheme'] ?? null;
     }
 
     /**
      * Get the uri port.
      * @return int
      */
-    public function port(): int
+    public function port(): ?int
     {
-        return $this->fragmentedUri['port'];
+        return $this->fragmentedUri['port'] ?? null;
     }
 
     /**
@@ -78,7 +78,7 @@ class Uri
      */
     public function fragment(): ?string
     {
-        return $this->fragmentedUri['fragment'];
+        return $this->fragmentedUri['fragment'] ?? null;
     }
 
     /**
@@ -87,7 +87,7 @@ class Uri
      */
     public function pass(): ?string
     {
-        return $this->fragmentedUri['pass'];
+        return $this->fragmentedUri['pass'] ?? null;
     }
 
     /**
@@ -96,6 +96,6 @@ class Uri
      */
     public function user(): ?string
     {
-        return $this->fragmentedUri['user'];
+        return $this->fragmentedUri['user'] ?? null;
     }
 }
