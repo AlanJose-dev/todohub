@@ -12,3 +12,5 @@ $serviceContainer->bind('_env', fn() =>
 );
 
 \App\Application::setServiceContainer($serviceContainer);
+
+\App\Application::getServiceContainer()->resolve('_env');
