@@ -38,7 +38,7 @@ class HttpKernel
                 $parameters['_route'],
             );
             $controllerInstance = new $controller();
-            call_user_func_array([$controllerInstance, $action], array_merge([$request], $parameters));
+            call_user_func_array([$controllerInstance, $action], array_merge([$request], array_values($parameters)));
         }
         catch(ResourceNotFoundException|\Exception $exception)
         {
