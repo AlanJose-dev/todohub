@@ -20,6 +20,8 @@ require BASE_PATH . 'bootstrap/app.php';
     'web',
 ]);
 
-$requestUri = $_SERVER['REQUEST_URI'];
-$httpKernel = new \App\Http\HttpKernel(\App\Http\Router::getRouteCollection());
-$httpKernel->handle($requestUri);
+if(isset($_SERVER['REQUEST_URI'])) {
+    $requestUri = $_SERVER['REQUEST_URI'];
+    $httpKernel = new \App\Http\HttpKernel(\App\Http\Router::getRouteCollection());
+    $httpKernel->handle($requestUri);
+}
