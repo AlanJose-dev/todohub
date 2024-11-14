@@ -8,7 +8,6 @@ const BASE_PATH = __DIR__ . '/../';
  * Calling autoloads.
  */
 require BASE_PATH . 'vendor/autoload.php';
-require BASE_PATH . '_vendor/dbsocket/vendor/autoload.php';
 
 /**
  * Calling app initializer.
