@@ -22,8 +22,19 @@ if(!function_exists('config')) {
 }
 
 if(!function_exists('storage_path')) {
-    function storage_path(string $path): mixed
+    function storage_path(string $path): string
     {
         return BASE_PATH . 'storage/' . $path;
+    }
+}
+
+if(!function_exists('component')) {
+    function component(string $path): mixed
+    {
+        $file = BASE_PATH . "resources/components/$path.view.php";
+        if(!file_exists($file)) {
+            throw new \Exception("Component '$path' not found");
+        }
+        return require $file;
     }
 }
