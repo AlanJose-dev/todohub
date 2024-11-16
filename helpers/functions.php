@@ -20,3 +20,10 @@ if(!function_exists('config')) {
         return \App\Facades\Config::get($key, $default);
     }
 }
+
+if(!function_exists('storage_path')) {
+    function storage_path(string $path): mixed
+    {
+        return BASE_PATH . 'storage/' . $path;
+    }
+}

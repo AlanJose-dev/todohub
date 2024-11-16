@@ -30,3 +30,4 @@ $serviceContainer->bind('_request', function() {
 \App\Application::getServiceContainer()->resolve('_env');
 
 \App\Facades\DB::init(env('DB_DRIVER', 'sqlite'));
+\App\Facades\Storage::init(env('FILESYSTEM_DISK', 'local'));
