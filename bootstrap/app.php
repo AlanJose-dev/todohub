@@ -28,3 +28,5 @@ $serviceContainer->bind('_request', function() {
 \App\Application::setServiceContainer($serviceContainer);
 
 \App\Application::getServiceContainer()->resolve('_env');
+
+\App\Facades\DB::init(env('DB_DRIVER', 'sqlite'));
