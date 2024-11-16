@@ -10,24 +10,26 @@ class Config
 
     public static function get(string $key, $default = null): mixed
     {
-        //File handling.
+        // File handling.
         $explodedKey = explode('.', $key);
-        $filename = $explodedKey[0];
+        $filename = array_shift($explodedKey); // Get the file name and remove it from the keys array.
         $fullFilename = self::CONFIG_FILES_BASE_PATH . $filename . '.php';
+
         if (!file_exists($fullFilename)) {
             throw new \Exception("Config file '{$filename}' not found");
         }
 
-        unset($explodedKey[0]); // Removing the file name index.
         $cacheKey = self::CACHE_KEY_PREFIX . $filename;
         $fileData = Cache::has($cacheKey) ? Cache::get($cacheKey) : require $fullFilename;
-        $crawlArray = function() use ($fileData, $explodedKey) {
-            $requestedData = null;
-            foreach ($explodedKey as $key) {
-                $requestedData = $fileData[$key];
+
+        // Traverse the array using the exploded keys.
+        foreach ($explodedKey as $keyPart) {
+            if (!is_array($fileData) || !array_key_exists($keyPart, $fileData)) {
+                return $default; // Return default if the key does not exist.
             }
-            return $requestedData;
-        };
-        return count($explodedKey) > 0 ? $crawlArray() ?? $default : $fileData;
+            $fileData = $fileData[$keyPart]; // Go deeper into the array.
+        }
+
+        return $fileData ?? $default;
     }
 }
