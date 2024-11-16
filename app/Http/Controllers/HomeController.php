@@ -8,6 +8,6 @@ class HomeController
 {
     public function welcome()
     {
-
+        View::make('welcome')->render();
     }
 }
