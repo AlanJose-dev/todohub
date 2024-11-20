@@ -12,7 +12,7 @@ $serviceContainer->bind('_env', function() {
     return Dotenv\Dotenv::createImmutable(BASE_PATH)->load();
 });
 $serviceContainer->bind('_log', function() {
-    $logFileName = 'app_' . date('Y_m_d_h_i_s') . '.log';
+    $logFileName = 'app_' . date('Y_m_d') . '.log';
     $logger = new \Monolog\Logger('app_log');
     $logger->pushHandler(
         new \Monolog\Handler\StreamHandler(BASE_PATH . "storage/logs/{$logFileName}")

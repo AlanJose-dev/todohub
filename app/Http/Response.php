@@ -13,5 +13,6 @@ class Response
         }
         http_response_code($status);
         echo $jsonData;
+        die();
     }
 }
