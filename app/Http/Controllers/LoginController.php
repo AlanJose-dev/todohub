@@ -62,7 +62,7 @@ class LoginController
                 ], 401);
             }
 
-            dd($_SESSION['user']);
+            header('Location: /dashboard');
         }
         catch (\Exception $exception)
         {
@@ -72,5 +72,11 @@ class LoginController
                 'errors' => 'Internal Server Error'
             ], 500);
         }
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        header('Location: /');
     }
 }

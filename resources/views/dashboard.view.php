@@ -1,3 +1,6 @@
+<?php
+    $user = \App\Facades\Auth::user();
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -8,6 +11,9 @@
     <title>Dashboard</title>
 </head>
 <body>
-
+    <h1>Welcome <?=$user->name?></h1>
+<form action="/logout" method="post">
+    <input type="submit" value="Logout">
+</form>
 </body>
 </html>

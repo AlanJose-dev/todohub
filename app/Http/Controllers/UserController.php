@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Facades\Auth;
 use App\Facades\DB;
 use App\Facades\View;
 use App\Http\Response;
@@ -75,14 +76,22 @@ class UserController
             }
 
             // Data storing.
-            $statement = DB::connection()
-                ->prepare('insert into users(name, email, password) values(:name, :email, :password)');
+            $connection = DB::connection();
+            $statement = $connection->prepare('insert into users(name, email, password) values(:name, :email, :password)');
             $statement->bindValue(':name', $data['name']);
             $statement->bindValue(':email', $data['email']);
             $statement->bindValue(':password', password_hash($data['password'], PASSWORD_BCRYPT));
             $statement->execute();
 
-            echo "Success!";
+            $user = (object) [
+                'id' => $connection->lastInsertId(),
+                'name' => $data['name'],
+                'email' => $data['email'],
+            ];
+
+            Auth::authenticate($user);
+
+            header('Location: /dashboard');
         }
         catch (\Exception $exception)
         {
@@ -92,5 +101,10 @@ class UserController
                 'errors' => 'Internal Server Error'
             ], 500);
         }
+    }
+
+    public function dashboard()
+    {
+        View::make('dashboard')->render();
     }
 }

@@ -6,7 +6,7 @@ class Auth
 {
     public static function attempt($email, $password)
     {
-        $statement = DB::connection()->prepare('select email, password from users where email = :email');
+        $statement = DB::connection()->prepare('select id, name, email, password from users where email = :email');
         $statement->bindParam(':email', $email);
         $statement->execute();
         $user = $statement->fetch();
@@ -23,20 +23,22 @@ class Auth
 
     public static function authenticate(\stdClass $user)
     {
-        $_SESSION['user'] = serialize($user);
+        Session::set('user', $user);
         session_regenerate_id(true);
     }
 
     public static function check()
     {
-        return isset($_SESSION['user']);
+        return Session::has('user');
+    }
+
+    public static function user(): \stdClass
+    {
+        return Session::get('user');
     }
 
     public static function logout()
     {
-        $params = session_get_cookie_params();
-        session_unset();
-        session_destroy();
-        setcookie(session_id(), '', time() - 42000, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+        Session::destroy();
     }
 }

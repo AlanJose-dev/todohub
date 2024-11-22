@@ -25,3 +25,7 @@ Router::post('/login', [\App\Http\Controllers\LoginController::class, 'login'], 
 Router::post('/logout', [\App\Http\Controllers\LoginController::class, 'logout'], [
     'name' => 'auth.logout',
 ]);
+
+Router::get('/dashboard', [\App\Http\Controllers\UserController::class, 'dashboard'], [
+    'name' => 'user.dashboard',
+]);
