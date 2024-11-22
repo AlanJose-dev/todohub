@@ -16,7 +16,7 @@ class Router
             $options['name'],
             new Route(
                 $path,
-                ['_controller' => $action[0], '_action' => $action[1]],
+                ['_controller' => $action[0], '_action' => $action[1], '_middlewares' => $options['middlewares'] ?? []],
                 requirements: $options['requirements'] ?? [],
                 methods: [$method],
             )
