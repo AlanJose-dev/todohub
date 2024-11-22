@@ -23,22 +23,23 @@ class Auth
 
     public static function authenticate(\stdClass $user)
     {
-        Session::set('user', $user);
-        session_regenerate_id(true);
+        $session = app()->resolve('_session');
+        $session->set('user', $user);
+        $session->migrate(true);
     }
 
     public static function check()
     {
-        return Session::has('user');
+        return app()->resolve('_session')->has('user');
     }
 
     public static function user(): \stdClass
     {
-        return Session::get('user');
+        return app()->resolve('_session')->get('user');
     }
 
     public static function logout()
     {
-        Session::destroy();
+        app()->resolve('_session')->invalidate();
     }
 }

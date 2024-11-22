@@ -67,8 +67,9 @@ class Router
 
     public static function redirectTo(string $path, array $flashed = [], array $headers = []): void
     {
+        $session = app()->resolve('_session');
         foreach ($flashed as $key => $value) {
-            Session::flash($key, $value);
+            $session->getFlashBag()->set($key, $value);
         }
         foreach ($headers as $name => $value) {
             header($name . ': ' . $value);
