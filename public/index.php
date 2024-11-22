@@ -14,7 +14,7 @@ require BASE_PATH . 'vendor/autoload.php';
  */
 require BASE_PATH . 'bootstrap/app.php';
 
-\App\Facades\Session::start();
+app()->resolve('_session')->start();
 
 \App\Http\Router::init();
 \App\Http\Router::loadRouteFiles([
@@ -27,4 +27,4 @@ if(isset($_SERVER['REQUEST_URI'])) {
     $httpKernel->handle($requestUri);
 }
 
-\App\Facades\Session::unflash();
+app()->resolve('_session')->getFlashBag()->clear();
