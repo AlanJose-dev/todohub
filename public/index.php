@@ -14,6 +14,8 @@ require BASE_PATH . 'vendor/autoload.php';
  */
 require BASE_PATH . 'bootstrap/app.php';
 
+session_start();
+
 \App\Http\Router::init();
 \App\Http\Router::loadRouteFiles([
     'web',
