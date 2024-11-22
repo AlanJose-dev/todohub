@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Facades\Session;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
@@ -62,5 +63,18 @@ class Router
     public static function delete(string $path, array $action, array $options = []): void
     {
         self::addRoute($path, $action, 'DELETE', $options);
+    }
+
+    public static function redirectTo(string $path, array $flashed = [], array $headers = []): void
+    {
+        foreach ($flashed as $key => $value) {
+            Session::flash($key, $value);
+        }
+        foreach ($headers as $name => $value) {
+            header($name . ': ' . $value);
+        }
+        http_response_code(303);
+        header('Location: ' . $path);
+        die();
     }
 }

@@ -18,7 +18,7 @@ class Session
 
     public static function get(string $key, mixed $default = null)
     {
-        return $_SESSION[$key] ?? $default;
+        return $_SESSION['_flash'][$key] ?? $_SESSION[$key] ?? $default;
     }
 
     public static function has(string $key)

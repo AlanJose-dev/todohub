@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Facades\Auth;
 use App\Facades\View;
 use App\Http\Response;
+use App\Http\Router;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
@@ -62,14 +63,14 @@ class LoginController
                 ], 401);
             }
 
-            header('Location: /dashboard');
+            Router::redirectTo('/dashboard');
         }
         catch (\Exception $exception)
         {
             app()->resolve('_log')->error($exception->getMessage());
             Response::json([
                 'success' => false,
-                'errors' => 'Internal Server Error'
+                'message' => 'Internal Server Error'
             ], 500);
         }
     }

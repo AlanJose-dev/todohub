@@ -6,6 +6,7 @@ use App\Facades\Auth;
 use App\Facades\DB;
 use App\Facades\View;
 use App\Http\Response;
+use App\Http\Router;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
@@ -69,10 +70,9 @@ class UserController
             }
 
             if(count(array_values($errors)) > 0) {
-                Response::json([
-                    'success' => false,
-                    'errors' => $errors
-                ], 400);
+                Router::redirectTo('/register', flashed: [
+                    'errors' => $errors,
+                ]);
             }
 
             // Data storing.
@@ -91,14 +91,14 @@ class UserController
 
             Auth::authenticate($user);
 
-            header('Location: /dashboard');
+            Router::redirectTo('/dashboard');
         }
         catch (\Exception $exception)
         {
             app()->resolve('_log')->error($exception->getMessage());
             Response::json([
                 'success' => false,
-                'errors' => 'Internal Server Error'
+                'message' => 'Internal Server Error'
             ], 500);
         }
     }

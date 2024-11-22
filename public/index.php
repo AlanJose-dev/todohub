@@ -14,7 +14,7 @@ require BASE_PATH . 'vendor/autoload.php';
  */
 require BASE_PATH . 'bootstrap/app.php';
 
-session_start();
+\App\Facades\Session::start();
 
 \App\Http\Router::init();
 \App\Http\Router::loadRouteFiles([
@@ -26,3 +26,5 @@ if(isset($_SERVER['REQUEST_URI'])) {
     $httpKernel = new \App\Http\HttpKernel(\App\Http\Router::getRouteCollection());
     $httpKernel->handle($requestUri);
 }
+
+\App\Facades\Session::unflash();
