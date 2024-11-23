@@ -49,18 +49,16 @@ class LoginController
             }
 
             if(count(array_values($errors)) > 0) {
-                Response::json([
-                    'success' => false,
+                Router::redirectTo('/login', [
                     'errors' => $errors
-                ], 400);
+                ]);
             }
 
             // Authentication.
             if(!Auth::attempt($data['email'], $data['password'])) {
-                Response::json([
-                   'success' => false,
-                   'message' => 'Invalid credentials or user not exists.'
-                ], 401);
+                Router::redirectTo('/login', [
+                    'message' => 'Invalid credentials or user not exists.',
+                ]);
             }
 
             Router::redirectTo('/dashboard');

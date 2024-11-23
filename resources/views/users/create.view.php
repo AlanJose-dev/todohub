@@ -1,3 +1,6 @@
+<?php
+$errors = app()->resolve('_session')->getFlashBag()->get('errors')
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -13,14 +16,23 @@
     <label>
         Name:
         <input type="text" name="name" required/>
+        <?php foreach($errors['name'] ?? [] as $errorMessage):?>
+            <p style="color: red;"><?=$errorMessage?></p>
+        <?php endforeach;?>
     </label>
     <label>
         Email:
         <input type="email" name="email" required/>
+        <?php foreach($errors['email'] ?? [] as $errorMessage):?>
+            <p style="color: red;"><?=$errorMessage?></p>
+        <?php endforeach;?>
     </label>
     <label>
         Password:
         <input type="password" name="password" required/>
+        <?php foreach($errors['password'] ?? [] as $errorMessage):?>
+            <p style="color: red;"><?=$errorMessage?></p>
+        <?php endforeach;?>
     </label>
     <input type="submit" value="Send">
 </form>
