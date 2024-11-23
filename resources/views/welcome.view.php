@@ -9,8 +9,12 @@
     <title>TodoHub - Manager your tasks easily</title>
 </head>
 <body>
-    <h1>Hey mom!</h1>
+<h1>Hey mom!</h1>
+<?php if (\App\Facades\Auth::check()): ?>
+    <a href="/dashboard">Dashboard</a>
+<?php else: ?>
     <a href="register">Register</a>
     <a href="login">Login</a>
+<?php endif; ?>
 </body>
 </html>

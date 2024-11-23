@@ -2,7 +2,6 @@
 
 namespace App\Http;
 
-use App\Facades\Session;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 

@@ -8,7 +8,7 @@
     <title>Dashboard</title>
 </head>
 <body>
-    <h1>Welcome</h1>
+    <h1>Welcome <?=\App\Facades\Auth::user()->name?></h1>
 <form action="/logout" method="post">
     <input type="submit" value="Logout">
 </form>

@@ -32,12 +32,18 @@ class HttpKernel
             $request = Request::createFromGlobals();
             $controller = $parameters['_controller'];
             $action = $parameters['_action'];
+            $middlewares = $parameters['_middlewares'];
             unset(
                 $parameters['_controller'],
                 $parameters['_action'],
                 $parameters['_route'],
+                $parameters['_middlewares']
             );
             $controllerInstance = new $controller();
+            foreach ($middlewares as $middleware) {
+                $middlewareInstance = new $middleware();
+                $middlewareInstance->handle($request);
+            }
             call_user_func_array([$controllerInstance, $action], array_merge([$request], array_values($parameters)));
         }
         catch(ResourceNotFoundException|\Exception $exception)
