@@ -48,3 +48,22 @@ if(!function_exists('dd')) {
         die();
     }
 }
+
+if(!function_exists('session')) {
+    function session(): \Symfony\Component\HttpFoundation\Session\Session
+    {
+        return app()->resolve('_session');
+    }
+}
+
+if(!function_exists('csrf_token')) {
+    function csrf_token(): string
+    {
+        $key = 'csrf_token';
+        $session = session();
+        if(!$session->has($key)) {
+            $session->set($key, bin2hex(random_bytes(32)));
+        }
+        return $session->get($key);
+    }
+}

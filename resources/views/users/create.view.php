@@ -1,5 +1,5 @@
 <?php
-$errors = app()->resolve('_session')->getFlashBag()->get('errors')
+$errors = app()->resolve('_session')->getFlashBag()->get('errors');
 ?>
 <!doctype html>
 <html lang="en">
@@ -13,6 +13,7 @@ $errors = app()->resolve('_session')->getFlashBag()->get('errors')
 <body>
 <h1>Register</h1>
 <form action="/user/store" method="post">
+    <input type="hidden" name="_token" value="<?=csrf_token()?>">
     <label>
         Name:
         <input type="text" name="name" required/>
@@ -20,6 +21,7 @@ $errors = app()->resolve('_session')->getFlashBag()->get('errors')
             <p style="color: red;"><?=$errorMessage?></p>
         <?php endforeach;?>
     </label>
+    <br>
     <label>
         Email:
         <input type="email" name="email" required/>
@@ -27,6 +29,7 @@ $errors = app()->resolve('_session')->getFlashBag()->get('errors')
             <p style="color: red;"><?=$errorMessage?></p>
         <?php endforeach;?>
     </label>
+    <br>
     <label>
         Password:
         <input type="password" name="password" required/>
@@ -34,7 +37,8 @@ $errors = app()->resolve('_session')->getFlashBag()->get('errors')
             <p style="color: red;"><?=$errorMessage?></p>
         <?php endforeach;?>
     </label>
-    <input type="submit" value="Send">
+    <br>
+    <input type="submit" value="Register">
 </form>
 </body>
 </html>
