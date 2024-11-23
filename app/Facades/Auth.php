@@ -2,6 +2,8 @@
 
 namespace App\Facades;
 
+use App\Models\User;
+
 class Auth
 {
     public static function attempt($email, $password)
@@ -21,7 +23,7 @@ class Auth
         return true;
     }
 
-    public static function authenticate(\stdClass $user)
+    public static function authenticate(User $user)
     {
         $session = app()->resolve('_session');
         $session->set('user', $user);
@@ -33,7 +35,7 @@ class Auth
         return app()->resolve('_session')->has('user');
     }
 
-    public static function user(): \stdClass
+    public static function user(): ?User
     {
         return app()->resolve('_session')->get('user');
     }

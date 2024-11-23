@@ -6,6 +6,7 @@ use App\Facades\Auth;
 use App\Facades\DB;
 use App\Facades\View;
 use App\Http\Router;
+use App\Models\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
@@ -73,18 +74,11 @@ class UserController
         }
 
         // Data storing.
-        $connection = DB::connection();
-        $statement = $connection->prepare('insert into users(name, email, password) values(:name, :email, :password)');
-        $statement->bindValue(':name', $data['name']);
-        $statement->bindValue(':email', $data['email']);
-        $statement->bindValue(':password', password_hash($data['password'], PASSWORD_BCRYPT));
-        $statement->execute();
-
-        $user = (object)[
-            'id' => $connection->lastInsertId(),
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-        ];
+            'password' => password_hash($data['password'], PASSWORD_DEFAULT),
+        ]);
 
         Auth::authenticate($user);
 
