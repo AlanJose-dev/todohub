@@ -17,7 +17,7 @@ final class CreateTasksTable extends AbstractMigration
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function change(): void
+    public function up(): void
     {
         $table = $this->table('tasks');
         $table->addColumn('title', 'string', ['length' => 255]);
