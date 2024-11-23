@@ -31,9 +31,18 @@ $serviceContainer->bind('_session', function() {
     return new Symfony\Component\HttpFoundation\Session\Session();
 });
 
+$serviceContainer->bind('_exception_handler', function () {
+    $whoops = new \Whoops\Run();
+    $whoops->allowQuit(true);
+    $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler());
+    return $whoops;
+});
+
 \App\Application::setServiceContainer($serviceContainer);
 
 \App\Application::getServiceContainer()->resolve('_env');
 
 \App\Facades\DB::init(env('DB_DRIVER', 'sqlite'));
 \App\Facades\Storage::init(env('FILESYSTEM_DISK', 'local'));
+
+set_exception_handler(new \App\Exceptions\ExceptionHandler());
