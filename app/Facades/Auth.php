@@ -42,6 +42,17 @@ class Auth
 
     public static function logout()
     {
-        app()->resolve('_session')->invalidate();
+        $params = session_get_cookie_params();
+        session()->clear();
+        session()->invalidate();
+        setcookie(
+            session()->getName(),
+            '',
+            time() - 3600,
+            $params['path'],
+            $params['domain'],
+            $params['secure'],
+            $params['httponly']
+        );
     }
 }

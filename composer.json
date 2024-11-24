@@ -21,7 +21,8 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "App\\": "app/"
+            "App\\": "app/",
+            "Framework\\": "framework/"
         },
         "files": [
             "helpers/functions.php"

@@ -41,3 +41,7 @@ Router::get('/dashboard', [\App\Http\Controllers\UserController::class, 'dashboa
         \App\Http\Middlewares\Authenticated::class,
     ],
 ]);
+
+Router::get('/teste', [\App\Http\Controllers\UserController::class, 'test'], [
+    'name' => 'user.test',
+]);

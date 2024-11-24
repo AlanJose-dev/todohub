@@ -74,13 +74,9 @@ class UserController
         }
 
         // Data storing.
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => password_hash($data['password'], PASSWORD_DEFAULT),
-        ]);
+        //TODO: Store user and authenticate it.
 
-        Auth::authenticate($user);
+//        Auth::authenticate();
 
         Router::redirectTo('/dashboard');
     }
