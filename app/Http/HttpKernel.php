@@ -30,21 +30,37 @@ class HttpKernel
         {
             $parameters = $this->urlMatcher->match($requestUri);
             $request = Request::createFromGlobals();
-            $controller = $parameters['_controller'];
-            $action = $parameters['_action'];
-            $middlewares = $parameters['_middlewares'];
-            unset(
-                $parameters['_controller'],
-                $parameters['_action'],
-                $parameters['_route'],
-                $parameters['_middlewares']
-            );
-            $controllerInstance = new $controller();
-            foreach ($middlewares as $middleware) {
-                $middlewareInstance = new $middleware();
-                $middlewareInstance->handle($request);
+            if(isset($parameters['_controller'])) {
+                $controller = $parameters['_controller'];
+                $action = $parameters['_action'];
+                $middlewares = $parameters['_middlewares'];
+                unset(
+                    $parameters['_controller'],
+                    $parameters['_action'],
+                    $parameters['_route'],
+                    $parameters['_middlewares']
+                );
+                $controllerInstance = new $controller();
+                foreach ($middlewares as $middleware) {
+                    $middlewareInstance = new $middleware();
+                    $middlewareInstance->handle($request);
+                }
+                call_user_func_array([$controllerInstance, $action], array_merge([$request], array_values($parameters)));
             }
-            call_user_func_array([$controllerInstance, $action], array_merge([$request], array_values($parameters)));
+            else {
+                $action = $parameters['_action'];
+                $middlewares = $parameters['_middlewares'];
+                unset(
+                    $parameters['_action'],
+                    $parameters['_route'],
+                    $parameters['_middlewares']
+                );
+                foreach ($middlewares as $middleware) {
+                    $middlewareInstance = new $middleware();
+                    $middlewareInstance->handle($request);
+                }
+                call_user_func($action, array_merge([$request], array_values($parameters)));
+            }
         }
         catch(ResourceNotFoundException|\Exception $exception)
         {
