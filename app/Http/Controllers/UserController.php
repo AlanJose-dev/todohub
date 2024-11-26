@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Facades\Auth;
-use App\Facades\DB;
-use App\Facades\View;
+use App\Facades\Support\DB;
+use App\Facades\Support\View;
 use App\Http\Router;
 use App\Models\User;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,6 +23,8 @@ class UserController
 
     public function store(Request $request)
     {
+        $start = microtime(true);
+        $startMemory = memory_get_usage();
         // Validation.
         $data = [
             'name' => $request->get('name'),
@@ -75,10 +76,9 @@ class UserController
 
         // Data storing.
         //TODO: Store user and authenticate it.
+        $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+        $user = User::create($data);
 
-//        Auth::authenticate();
-
-        Router::redirectTo('/dashboard');
     }
 
     public function dashboard()

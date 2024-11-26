@@ -2,7 +2,7 @@
 
 namespace App\Http\Middlewares;
 
-use App\Facades\Auth;
+use App\Facades\Support\Auth;
 use App\Http\Router;
 use Symfony\Component\HttpFoundation\Request;
 

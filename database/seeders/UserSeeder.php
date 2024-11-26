@@ -24,10 +24,10 @@ class UserSeeder extends AbstractSeed
     public function run(): void
     {
         $table = $this->table('users');
-        for($i = 0; $i < 100; $i++) {
+        for($i = 0; $i < 1000; $i++) {
             $table->insert([
                 'name' => $this->faker->name(),
-                'email' => $this->faker->email,
+                'email' => $this->faker->unique()->email(),
                 'password' => password_hash('password', PASSWORD_BCRYPT),
             ])->saveData();
         }

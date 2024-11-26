@@ -17,7 +17,7 @@ if(!function_exists('env')) {
 if(!function_exists('config')) {
     function config(string $key, $default = null): mixed
     {
-        return \App\Facades\Config::get($key, $default);
+        return \App\Facades\Support\Config::get($key, $default);
     }
 }
 
@@ -40,10 +40,10 @@ if(!function_exists('component')) {
 }
 
 if(!function_exists('dd')) {
-    function dd(mixed $data): void
+    function dd(mixed $value, mixed ...$values): void
     {
         echo "<pre>";
-        var_dump($data);
+        var_dump($value, ...$values);
         echo "</pre>";
         die();
     }
@@ -65,5 +65,12 @@ if(!function_exists('csrf_token')) {
             $session->set($key, bin2hex(random_bytes(32)));
         }
         return $session->get($key);
+    }
+}
+
+if(!function_exists('database')) {
+    function database(): PDO
+    {
+        return app()->resolve('_database');
     }
 }

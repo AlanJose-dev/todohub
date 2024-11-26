@@ -8,7 +8,7 @@
     <title>Dashboard</title>
 </head>
 <body>
-    <h1>Welcome <?=\App\Facades\Auth::user()->name?></h1>
+    <h1>Welcome <?= \App\Facades\Support\Auth::user()->name?></h1>
 <form action="/logout" method="post">
     <input type="hidden" name="_token" value="<?=csrf_token()?>">
     <input type="submit" value="Logout">

@@ -38,11 +38,15 @@ $serviceContainer->bind('_exception_handler', function () {
     return $whoops;
 });
 
+$serviceContainer->bind('_database', function() {
+    return \App\Facades\Support\DB::connection();
+});
+
 \App\Application::setServiceContainer($serviceContainer);
 
 \App\Application::getServiceContainer()->resolve('_env');
 
-\App\Facades\DB::init(env('DB_DRIVER', 'sqlite'));
-\App\Facades\Storage::init(env('FILESYSTEM_DISK', 'local'));
+\App\Facades\Support\DB::init(env('DB_DRIVER', 'sqlite'));
+\App\Facades\Support\Storage::init(env('FILESYSTEM_DISK', 'local'));
 
 set_exception_handler(new \App\Exceptions\ExceptionHandler());

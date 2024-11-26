@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Application;
 
-use App\Facades\DB;
+use App\Facades\Support\DB;
 use PHPUnit\Framework\TestCase;
 
 final class DatabaseTest extends TestCase

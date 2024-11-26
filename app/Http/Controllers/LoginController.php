@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Facades\Auth;
-use App\Facades\View;
+use App\Facades\Support\Auth;
+use App\Facades\Support\View;
 use App\Http\Response;
 use App\Http\Router;
 use Symfony\Component\HttpFoundation\Request;

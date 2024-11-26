@@ -10,7 +10,7 @@
 </head>
 <body>
 <h1>Hey mom!</h1>
-<?php if (\App\Facades\Auth::check()): ?>
+<?php if (\App\Facades\Support\Auth::check()): ?>
     <a href="/dashboard">Dashboard</a>
 <?php else: ?>
     <a href="register">Register</a>
