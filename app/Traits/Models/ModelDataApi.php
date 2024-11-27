@@ -94,4 +94,12 @@ trait ModelDataApi
         ], limit: $isArray ? count($id) : 1);
         return $isArray ? $data : $data->first();
     }
+
+    public static function first(array $columns = ['*']): ?static
+    {
+        return self::select(
+            $columns,
+            limit: 1,
+        )->first();
+    }
 }
