@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Facades\Support\Auth;
 use App\Facades\Support\DB;
 use App\Facades\Support\View;
 use App\Http\Router;
@@ -23,8 +24,6 @@ class UserController
 
     public function store(Request $request)
     {
-        $start = microtime(true);
-        $startMemory = memory_get_usage();
         // Validation.
         $data = [
             'name' => $request->get('name'),
@@ -58,11 +57,10 @@ class UserController
         }
 
         // Check for duplicate entries.
-        $statement = DB::connection()
-            ->prepare('select if(email, "true", "false") as is_duplicate_entry from users where email = :email');
-        $statement->bindValue(':email', $data['email']);
-        $statement->execute();
-        $isDuplicateEntry = (bool)$statement->fetch();
+        $isDuplicateEntry = (bool) DB::query(
+            'select if(email, "true", "false") as is_duplicate_entry from users where email = :email',
+            ['email' => $data['email']]
+        );
 
         if ($isDuplicateEntry) {
             $errors['email'][] = 'This email is already in use.';
@@ -75,10 +73,12 @@ class UserController
         }
 
         // Data storing.
-        //TODO: Store user and authenticate it.
         $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
         $user = User::create($data);
 
+        Auth::authenticate($user);
+
+        Router::redirectTo('/dashboard');
     }
 
     public function dashboard()
