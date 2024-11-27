@@ -76,6 +76,6 @@ class LoginController
     public function logout()
     {
         Auth::logout();
-        header('Location: /');
+        Router::redirectTo('/');
     }
 }

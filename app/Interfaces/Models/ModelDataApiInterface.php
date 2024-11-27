@@ -15,6 +15,6 @@ interface ModelDataApiInterface
     public static function create(array $data): static;
 
     public static function select(array $columns = ['*'], array $whereColumns = [], int $limit = 1000, int $offset = 0): Collection;
-//
+
     public static function find(int|array $id): static|null|Collection;
 }

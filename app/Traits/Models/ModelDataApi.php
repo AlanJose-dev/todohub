@@ -47,30 +47,51 @@ trait ModelDataApi
         return (new static($data))->save();
     }
 
-    # $wheres pattern: 'column.operand' => value.
-    public static function select(array $columns = ['*'], array $wheres = [], int $limit = 0, int $offset = 0): Collection
+    # $wheres pattern: 'column.operand' => value
+    public static function select(array $columns = ['*'], array $wheres = [], int $limit = 50, int $offset = 0): Collection
     {
         $columns = implode(', ', $columns);
-        $binds = !empty($wheres) ? array_map(function ($value, $column) {
-            [$column, $operator] = explode('.', $column);
-            return "{$column} {$operator} ?";
-        }, $wheres, array_keys($wheres)) : [];
-        $binds = implode(' and ', $binds);
-        $values = array_values($wheres);
-        $table = (new \ReflectionProperty(self::class, 'table'))->getValue(new static);
-        $sql = "select $columns from $table ";
-        $sql .= !empty($wheres) ? "where $binds " : "";
-        $sql .= $limit > 0 ? "limit $limit offset $offset" : "";
-        $results = DB::queryLazy($sql, $values);
-        $modelsToReturn = new Collection();
-        foreach ($results as $result) {
-            $modelsToReturn->add(new static($result));
+        $binds = [];
+        $values = [];
+
+        foreach ($wheres as $column => $condition) {
+            [$columnName, $operator] = explode('.', $column);
+
+            if ($operator === 'in') {
+                $placeholders = implode(', ', array_fill(0, count($condition), '?'));
+                $binds[] = "{$columnName} in ({$placeholders})";
+                $values = array_merge($values, $condition);
+            } else {
+                $binds[] = "{$columnName} {$operator} ?";
+                $values[] = $condition;
+            }
         }
+
+        $binds = implode(' and ', $binds);
+        $table = (new \ReflectionProperty(self::class, 'table'))->getValue(new static);
+
+        $sql = "select $columns from $table ";
+        $sql .= !empty($wheres) ? "WHERE $binds " : "";
+        $sql .= $limit > 0 ? "limit $limit offset $offset" : "";
+
+        $useLazy = $limit === 0 || $limit > 100;
+        $results = $useLazy ? DB::queryLazy($sql, $values) : DB::query($sql, $values);
+        $modelsToReturn = new Collection();
+
+        foreach ($results as $result) {
+            $modelsToReturn->add(new static((array) $result));
+        }
+
         return $modelsToReturn;
     }
 
-    public static function find(int|array $id): static|null|array
+    public static function find(int|array $id): static|null|Collection
     {
-        $data = self::select(wheres: []);
+        $isArray = is_array($id);
+        $columnOperand = $isArray ? 'id.in' : 'id.=';
+        $data = self::select(wheres: [
+            $columnOperand => $id
+        ], limit: $isArray ? count($id) : 1);
+        return $isArray ? $data : $data->first();
     }
 }
