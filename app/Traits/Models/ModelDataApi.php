@@ -15,6 +15,7 @@ trait ModelDataApi
             $this->table,
             $properties,
         );
+        $this->id = database()->lastInsertId();
         return $this;
     }
 

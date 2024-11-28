@@ -89,11 +89,11 @@ class DB
         return $statement->execute($data);
     }
 
-    public static function delete(string $table, string $targetColumn, string $operand, int $targetColumnValue): bool
+    public static function delete(string $table, string $targetColumn, string $operator, int $targetColumnValue): bool
     {
-        $sql = "delete from $table where $targetColumn $operand :$targetColumn";
+        $sql = "delete from $table where $targetColumn $operator ?";
         $statement = app()->resolve('_database')->prepare($sql);
-        return $statement->execute([$operand => $targetColumnValue]);
+        return $statement->execute([$targetColumnValue]);
     }
 
     public static function truncate(string $table, bool $force = false): bool
